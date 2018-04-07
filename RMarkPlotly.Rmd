@@ -1,0 +1,60 @@
+---
+title: "R Markdown & Plotly"
+author: "Grzegorz Olszewski"
+date: "7 kwietnia 2018"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(plotly)
+library(dplyr)
+```
+
+## Introduction
+
+For this presentation I used some dataset from Kaggle competition Titanic Disaster.
+This dataset contains:
+
+- Survival (1 - Yes, 0 - No)
+- Pclass - class of room
+- Age
+- Sex
+- Sinsp - number of siblings/spouses aboard of Titanic
+- Parch - number of parents/childrens aboard of Titanic
+- Fare - passenger fare
+
+
+## Some explanatory plots
+
+
+```{r plotly }
+df <- read.csv("train.csv")
+
+plotly::plot_ly(df, x=~Sex, y=~Age, type = "box") %>% 
+  layout(title = "Age and Sex of passengers")
+
+df %>% 
+  group_by(Pclass) %>% 
+  summarise(Survived = mean(Survived)) %>% 
+  plot_ly(x=~Pclass, y=~Survived, type = "bar") %>% 
+  layout(title = "% of survived by class room")
+
+```
+
+## Other chart
+
+
+
+```{r fare}
+df %>% 
+  plot_ly(x=~Survived, y=~Fare, type = "box") %>% 
+  layout(title ="Survived by fare cost")
+```
+
+## Conclusions
+
+As we can see type of room (quality) and also fare cost influence very much on probability of survive from Titanic Disaster.
+
+
+
